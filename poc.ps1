@@ -91,7 +91,7 @@ Write-Host "[+] Symbolic link created successfully on $target2"
         }
 
 # schtasks /run /TN "Microsoft\Windows\Windows Error Reporting\QueueReporting" | Out-Null
-Write-Host "test123"
+# Write-Host "test123"
 Start-Sleep -s 1
 
 [NtApiDotNet.NtFile]::DeleteReparsePoint("\??\$path") | Out-Null
