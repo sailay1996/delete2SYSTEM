@@ -12,6 +12,8 @@ In order to work this technique, you must to delete the 2 folders which are `C:\
 ##### Note:
 `NtApiDotNet.dll` from James Forshaw.
 
+![test1](https://github.com/sailay1996/delete2SYSTEM/blob/master/wmp_del2sys.jpg)
+
 *Thanks to: [@jonasLyk](https://twitter.com/jonasLyk) and other who research awesome things*
 
 ###### Code Browsed from:
