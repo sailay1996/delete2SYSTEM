@@ -1,2 +1,2 @@
 # delete2SYSTEM
-Arbitrary Files/Directories Delete to NT AUTHORITY\SYSTEM
+Weaponizing for Arbitrary Files/Directories Delete bugs to Get NT AUTHORITY\SYSTEM
